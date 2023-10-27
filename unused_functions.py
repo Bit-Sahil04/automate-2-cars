@@ -55,11 +55,11 @@ def get_object_type_on_lane(lane_number):
     print(region, lane_number)
 
     region = (
-        game_offset_x+lane_divider_width[lane_number]) + lane_width * lane_number, 
-        car_top_point-250, 
-        lane_width, 
-        100
-        )
+            game_offset_x+lane_divider_width[lane_number] + lane_width * lane_number, 
+            car_top_point-250, 
+            lane_width, 
+            100
+            )
 
     is_circle = get_circles(screenshot, region)
     is_square = get_squares(screenshot, region)
