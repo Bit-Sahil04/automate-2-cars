@@ -2,6 +2,14 @@ import cv2
 import numpy as np
 from PIL import Image, ImageDraw
 
+# Define or import the undefined names
+lane_width = 100
+lane_divider_width = (0, 2, 5, 7)
+game_offset_x = 9
+detection_line_y = 746 - 400 - 120 - 150  # car_top_point - detection_offset
+screenshot = None  # Initialize screenshot
+screenshow = None  # Initialize screenshow
+
 palette = {
     "red": (244, 56, 101),
     "blue": (0, 169, 192),
@@ -36,8 +44,13 @@ def get_object_type_on_lane(lane_number):
     top_left = (center_x - 19, detection_line_y - 19)
     center  = (center_x , detection_line_y)
 
-    color_top_left = screenshot.getpixel(top_left)
-    color_center = screenshot.getpixel(center)
+    # Check if screenshot is initialized
+    if screenshot is not None:
+        color_top_left = screenshot.getpixel(top_left)
+        color_center = screenshot.getpixel(center)
+    else:
+        print("Screenshot is not initialized.")
+        return
 
     background = palette['background']
     red = palette['red']
@@ -82,15 +95,42 @@ def get_object_type_on_lane(lane_number):
         # Save the modified screenshot
         screenshot.save('modified_screenshot.png')
     
-        return 'c'
-    
-    if color_top_left == color_center and (color_center in (red, blue)):
+    region=(
+            (game_offset_x + lane_divider_width[lane_number])   + lane_width * lane_number, 
+            car_top_point - 250, 
+            lane_width, 
+            100
+        )
+    # Check if draw is initialized
+    if draw is not None:
+        draw.rectangle(region, outline=(255, 255, 255))
+    else:
+        print("Draw is not initialized.")
+        return
 
-        # screenshot.putpixel(top_left, (255, 10, 250))
-        # screenshot.putpixel(center, (255, 10, 250))
+    # Check if screenshow is initialized
+    if screenshow is not None:
+        screenshow.show()
+    else:
+        print("Screenshow is not initialized.")
+        return
 
-        # # Save the modified screenshot
-        # screenshot.save('modified_screenshot.png')
+    print(region, lane_number)
+
+    region = (
+            game_offset_x+lane_divider_width[lane_number] + lane_width * lane_number, 
+            car_top_point-250, 
+            lane_width, 
+            100
+            )
+
+    # Check if get_circles and get_squares are defined
+    try:
+        is_circle = get_circles(screenshot, region)
+        is_square = get_squares(screenshot, region)
+    except NameError:
+        print("get_circles and/or get_squares are not defined.")
+        return
 
         return 'r'
 
