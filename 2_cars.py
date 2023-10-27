@@ -1,12 +1,3 @@
-import pyautogui
-import pygetwindow as gw
-import cv2
-import numpy as np
-from PIL import Image
-
-import mss
-import mss.tools
-
 game_window = gw.getWindowsWithTitle('CPH2381')
 window = []
 colors = []
@@ -21,9 +12,6 @@ else:
 
 
 palette = {
-    "red": (244, 56, 101),
-    "blue": (0, 169, 192),
-    "white": (255, 255, 255),
     "background": (37, 50, 123),
     "lane": (92, 110, 193),
     "dark_bg": (15, 19, 49)
@@ -187,9 +175,6 @@ def count_pixel_on_line(lane_number, height):
         
         if color_diff(current_pixel, background) > 2000:
             pixels += 1
-        else:
-            break
-    #         break
         
     #     start += 1
     # print(x_start, x_end+1)
@@ -274,7 +259,8 @@ def count_pixels_on_lane_y(lane_number, height):
     # save_disk(screenshot, draw=[(x_check, height)], count=2)
     # raise
 
-    is_background = lambda x: color_diff(x, background) < color_threshold or color_diff(x, dark_bg) < color_threshold
+    def is_background(x): 
+        return color_diff(x, background) < color_threshold or color_diff(x, dark_bg) < color_threshold
 
 
     if is_background(current_pixel):
@@ -424,14 +410,6 @@ def take_action(lane_number):
 
 
 import time
-import pyautogui
-import pygetwindow as gw
-import cv2
-import numpy as np
-from PIL import Image
-
-import mss
-import mss.tools
 
 count = 0 
 frames = 0
