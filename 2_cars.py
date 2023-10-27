@@ -2,19 +2,19 @@ import pyautogui
 import pygetwindow as gw
 import cv2
 import numpy as np
-from PIL import Image, ImageDraw
+from PIL import Image
 
 import mss
 import mss.tools
 
 game_window = gw.getWindowsWithTitle('CPH2381')
-
+window = []
+colors = []
 
 window_x = 1492
 
-
-if window:
-    window[0].moveTo(window_x, 0)
+if game_window:
+    game_window[0].moveTo(window_x, 0)
 else:
     print("Window not found!")
 
@@ -138,7 +138,19 @@ game_offset_x = 9
 
 
 def count_pixel_on_line(lane_number, height):
-    
+    background = palette['background']
+    x_start = game_offset_x + lane_divider_width[lane_number]  + lane_width * lane_number
+    x_end = x_start + lane_width
+    pixels = 0
+    x_mid  = x_start + (x_end - x_start)//2
+    current_pixel = screenshot.pixel(x_mid, height) 
+    if color_diff(current_pixel, background) < 20000:
+        return 0
+    for i in range(x_start, x_end+1):
+        current_pixel = screenshot.pixel(i, height)
+        if color_diff(current_pixel, background) > 30000:
+            pixels += 1
+    return pixels 
     x_start = game_offset_x + lane_divider_width[lane_number]  + lane_width * lane_number
     x_end = x_start + lane_width
 
@@ -242,6 +254,8 @@ def tap_screen(lane_number):
 
 
 def count_pixels_on_lane_y(lane_number, height):
+    def is_background(x): 
+        return color_diff(x, background) < color_threshold or color_diff(x, dark_bg) < color_threshold
     background = palette['background']
     dark_bg = palette['dark_bg']
     
@@ -410,6 +424,14 @@ def take_action(lane_number):
 
 
 import time
+import pyautogui
+import pygetwindow as gw
+import cv2
+import numpy as np
+from PIL import Image
+
+import mss
+import mss.tools
 
 count = 0 
 frames = 0
