@@ -7,7 +7,7 @@ from PIL import Image, ImageDraw
 import mss
 import mss.tools
 
-window = gw.getWindowsWithTitle('CPH2381')
+game_window = gw.getWindowsWithTitle('CPH2381')
 
 
 window_x = 1492
@@ -29,12 +29,10 @@ palette = {
     "dark_bg": (15, 19, 49)
 }
 
-# 54, 161, 269, 372
 game_header_offset = 400
 game_footer_offset = 120
 car_lane_width = 107 
 start_pos = 54
-
 
 car_top_point = 746 - game_header_offset - game_footer_offset
 car_mid_point = 787 - game_header_offset - game_footer_offset
@@ -161,9 +159,8 @@ def count_pixel_on_line(lane_number, height):
 
     #     current_pixel = screenshot.pixel(i, height)
         
-    #     if color_diff(current_pixel, background) > 2000:
-    #         # print(current_pixel)
-    #         pixels += 1
+        if color_diff(current_pixel, background) > 2000:
+            pixels += 1
     #     else:
     #         break
         
@@ -176,9 +173,10 @@ def count_pixel_on_line(lane_number, height):
     #     # current_pixel = screen[start, height]
     #     current_pixel = screenshot.pixel(i, height)
         
-    #     if color_diff(current_pixel, background) > 2000:
-    #         pixels += 1
-    #     else:
+        if color_diff(current_pixel, background) > 2000:
+            pixels += 1
+        else:
+            break
     #         break
         
     #     start += 1
@@ -278,8 +276,8 @@ def count_pixels_on_lane_y(lane_number, height):
         total_pixels += 1
         current_pixel = screenshot.pixel(x_check, y_check)
         y_check -=1
-        # colors.append((current_pixel,color_diff(current_pixel, background), 0) )
-        # colors.append((x_check, y_check))
+        colors.append((current_pixel,color_diff(current_pixel, background), 0) )
+        colors.append((x_check, y_check))
     
     y_check = height
     current_pixel = screenshot.pixel(x_check, height)
@@ -288,8 +286,8 @@ def count_pixels_on_lane_y(lane_number, height):
         total_pixels += 1
         current_pixel = screenshot.pixel(x_check, y_check)
         y_check +=1
-        # colors.append((current_pixel,color_diff(current_pixel, background), 1) )
-        # colors.append((x_check, y_check))
+        colors.append((current_pixel,color_diff(current_pixel, background), 1) )
+        colors.append((x_check, y_check))
 
     
     # if 5 < total_pixels < 15:
@@ -642,7 +640,3 @@ with mss.mss() as sct:
     # red_circle = pyautogui.locateOnScreen('circle_blue.png',)
     # red_square = pyautogui.locateOnScreen('circle_red.png', )
     # blue_circle = pyautogui.locateOnScreen('square_blue.png')
-    # blue_square = pyautogui.locateOnScreen('square_red.png',)
-
-
-
