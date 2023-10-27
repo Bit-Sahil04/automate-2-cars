@@ -10,6 +10,30 @@ detection_line_y = 746 - 400 - 120 - 150  # car_top_point - detection_offset
 screenshot = None  # Initialize screenshot
 screenshow = None  # Initialize screenshow
 
+def get_circles(screenshot, region):
+    x,y, w,h = region
+    img = np.array(screenshot)
+    img = img[  y: y+h, x: x+ w]
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    circles = cv2.HoughCircles(gray, cv2.HOUGH_GRADIENT, dp=1, minDist=30, param1=50, param2=30, minRadius=5, maxRadius=150)
+    if circles is not None and len(circles)!=0:
+        return True
+    return False
+
+def get_squares(screenshot, region):
+    x,y, w,h = region
+    img = np.array(screenshot) 
+    img = img[  y: y+h, x: x+ w]
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    edges = cv2.Canny(gray, 50, 150)
+    contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    for contour in contours:
+        epsilon = 0.04 * cv2.arcLength(contour, True)
+        approx = cv2.approxPolyDP(contour, epsilon, True)
+        if len(approx) == 4:
+            return True
+    return False
+
 palette = {
     "red": (244, 56, 101),
     "blue": (0, 169, 192),
