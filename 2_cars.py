@@ -1,3 +1,4 @@
+# No changes needed in this snippet
 import pyautogui
 import pygetwindow as gw
 import cv2
@@ -387,27 +388,19 @@ def get_object_on_lane_by_pixels_y(lane_number):
 
 
 def take_action(lane_number):
-
-
     obj = get_object_on_lane_by_pixels_y(lane_number)
-    # obj = detect_shape_on_lane(lane_number)
     is_car = is_car_on_lane(lane_number)
 
     if obj == 'n':
         return
 
-    
-    
-    
     if obj == 's' and is_car:
         tap_screen(lane_number)
-        print(f'tapped {lane_number} for square')
+        print(f'Tapped {lane_number} for square')
     
     if obj == 'c' and not is_car:
         tap_screen(lane_number)
-        print(f'tapped {lane_number} for circle')
-
-    # time.sleep(0.1)
+        print(f'Tapped {lane_number} for circle')
     return
 
 
@@ -461,6 +454,7 @@ with mss.mss() as sct:
         # shape_0 = get_shape_on_lane(0)
 
         # screenshot = np.array(screenshot)
+        # No changes needed in this snippet
         # print(is_car_on_lane(0), end=' ')
         # print(is_car_on_lane(1), end=" ")
         # print(is_car_on_lane(2), end=" ")
@@ -499,6 +493,7 @@ with mss.mss() as sct:
         # get_shape_on_lane(1)
         # get_shape_on_lane(2)
         # get_shape_on_lane(3)
+        # No changes needed in this snippet
         # take_action(0)
         # take_action(1)
         # if obj != 'n':
@@ -534,6 +529,7 @@ with mss.mss() as sct:
 
 
 
+# No changes needed in this snippet
 # def get_object_type_on_lane(lane_number):
 
 #     center_x =  (lane_number + 1) * lane_width  + (lane_divider_width[lane_number]) 
@@ -642,7 +638,3 @@ with mss.mss() as sct:
     # red_circle = pyautogui.locateOnScreen('circle_blue.png',)
     # red_square = pyautogui.locateOnScreen('circle_red.png', )
     # blue_circle = pyautogui.locateOnScreen('square_blue.png')
-    # blue_square = pyautogui.locateOnScreen('square_red.png',)
-
-
-
